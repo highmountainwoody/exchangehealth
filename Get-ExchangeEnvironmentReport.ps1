@@ -2,6 +2,10 @@
     .SYNOPSIS
     Creates a HTML Report describing the Exchange environment 
    
+   	Steve Goodman
+	
+	THIS CODE IS MADE AVAILABLE AS IS, WITHOUT WARRANTY OF ANY KIND. THE ENTIRE 
+	RISK OF THE USE OR THE RESULTS FROM THE USE OF THIS CODE REMAINS WITH THE USER.
 	
 	Version 1.6.2 January 2017
 	
@@ -9,7 +13,53 @@
 	
     This script creates a HTML report showing the following information about an Exchange 
     2016, 2013, 2010 and to a lesser extent, 2007 and 2003, environment. 
-   
+    
+    The following is shown:
+	
+	* Report Generation Time
+	* Total Servers per Exchange Version (2003 > 2010 or 2007 > 2016)
+	* Total Mailboxes per Exchange Version, Office 365 and Organisation
+	* Total Roles in the environment
+		
+	Then, per site:
+	* Total Mailboxes per site
+    * Internal, External and CAS Array Hostnames
+	* Exchange Servers with:
+		o Exchange Server Version
+		o Service Pack
+		o Update Rollup and rollup version
+		o Roles installed on server and mailbox counts
+		o OS Version and Service Pack
+		
+	Then, per Database availability group (Exchange 2010/2013/2016):
+	* Total members per DAG
+	* Member list
+	* Databases, detailing:
+		o Mailbox Count and Average Size
+		o Archive Mailbox Count and Average Size (Only shown if DAG includes Archive Mailboxes)
+		o Database Size and whitespace
+		o Database and log disk free
+		o Last Full Backup (Only shown if one or more DAG database has been backed up)
+		o Circular Logging Enabled (Only shown if one or more DAG database has Circular Logging enabled)
+		o Mailbox server hosting active copy
+		o List of mailbox servers hosting copies and number of copies
+		
+	Finally, per Database (Non DAG DBs/Exchange 2007/Exchange 2003)
+	* Databases, detailing:
+		o Storage Group (if applicable) and DB name
+		o Server hosting database
+		o Mailbox Count and Average Size
+		o Archive Mailbox Count and Average Size (Only shown if DAG includes Archive Mailboxes)
+		o Database Size and whitespace
+		o Database and log disk free
+		o Last Full Backup (Only shown if one or more DAG database has been backed up)
+		o Circular Logging Enabled (Only shown if one or more DAG database has Circular Logging enabled)
+		
+	This does not detail public folder infrastructure, or examine Exchange 2007/2003 CCR/SCC clusters
+	(although it attempts to detect Clustered Exchange 2007/2003 servers, signified by ClusMBX).
+	
+	IMPORTANT NOTE: The script requires WMI and Remote Registry access to Exchange servers from the server 
+	it is run from to determine OS version, Update Rollup, Exchange 2007/2003 cluster and DB size information.
 	
 	.PARAMETER HTMLReport
     Filename to write HTML Report to
